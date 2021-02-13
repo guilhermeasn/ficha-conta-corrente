@@ -5,7 +5,7 @@ import { showNewAccount }      from './modals';
 const Footer = props => {
     return (
         <footer {...props}>
-            <div className="border-top p-3 text-center">
+            <div className="fixed-bottom bg-light border-top p-3 text-center">
                 <Switch>
 
                     <Route path="/" exact={true}>
