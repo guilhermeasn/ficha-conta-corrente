@@ -2,7 +2,7 @@
   "kind": "collectionType",
   "collectionName": "accounts",
   "info": {
-    "name": "account",
+    "name": "accounts",
     "description": ""
   },
   "options": {
@@ -13,6 +13,17 @@
   "attributes": {
     "client": {
       "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "account.input"
     }
   }
 }

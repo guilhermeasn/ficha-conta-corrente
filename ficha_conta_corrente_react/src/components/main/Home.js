@@ -1,13 +1,14 @@
-import http from '../../utils/http';
-import { useEffect, useState } from 'react';
-
-import { Link }  from 'react-router-dom';
-import { Table } from 'react-bootstrap';
-
+import http    from '../../utils/http';
 import Loading from '../misc/Loading';
+
+import { useEffect, useState } from 'react';
+import { Link, Redirect }      from 'react-router-dom';
+import { Table }               from 'react-bootstrap';
 
 
 export default function Home() {
+
+    const [rdir, setRdir] = useState(0);
     const [rnew, setRnew] = useState(0);
     const [ajax, setAjax] = useState(false);
     const [data, setData] = useState([]);
@@ -21,7 +22,9 @@ export default function Home() {
         }).catch(reject => console.error(reject));
     }, [rnew]);
 
-    setTimeout(() => setRnew(rnew+1), 30000);
+    if(rdir) return <Redirect to={'/' + rdir}/>;
+
+    setTimeout(() => setRnew(rnew+1), 180000);
     
     return ajax ? (
         <Table className="text-center w-100" responsive="md" striped bordered hover>
@@ -35,16 +38,29 @@ export default function Home() {
             </thead>
             <tbody>
                 {
-                    data.map((account) =>
-                        <tr key={account.id}>
-                            <td>{ ('0000' + account.id).slice(-4) }</td>
-                            <th><Link to={ '/' + account.id }>{ account.client }</Link></th>
-                            <td>{ new Date(account.last_input).toLocaleString('pt-br') }</td>
-                            <th className={ 'text-' + (account.amount>0 ? 'success' : 'danger') }>{ account.amount.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }</th>
-                        </tr>
-                    )
+                    data.map((account) => {
+
+                        account.last_input = account.created_at;
+                        account.amount = 0;
+
+                        account.inputs.forEach(input => {
+                            account.last_input = input.registry
+                            account.amount += input.credit;
+                            account.amount -= input.debit;
+                        });
+
+                        return (
+                            <tr key={account.id} onClick={ () => setRdir(account.id) } style={ {cursor: 'pointer'} }>
+                                <td>{ ('0000' + account.id).slice(-4) }</td>
+                                <th><Link to={ '/' + account.id }>{ account.client }</Link></th>
+                                <td>{ new Date(account.last_input).toLocaleString('pt-br') }</td>
+                                <th className={ 'text-nowrap text-' + ( account.amount < 0 ? 'danger' : 'success' ) }>{ account.amount.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }</th>
+                            </tr>
+                        );
+                    })
                 }
             </tbody>
         </Table>
     ) : <Loading dark/>;
+
 }

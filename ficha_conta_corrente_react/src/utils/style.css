@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 /* LOADING - HTML: <div class="lds-grid dark"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> */
 .lds-grid {display: inline-block;position: relative;width: 80px;height: 80px;}
 .lds-grid div {position: absolute;width: 16px;height: 16px;border-radius: 50%;background: #777;animation: lds-grid 1.2s linear infinite;}

@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_account_inputs",
+  "info": {
+    "name": "input",
+    "icon": "wallet",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "debit": {
+      "type": "float",
+      "required": true,
+      "min": 0
+    },
+    "credit": {
+      "type": "float",
+      "min": 0,
+      "required": true
+    },
+    "registry": {
+      "type": "datetime"
+    }
+  }
+}
